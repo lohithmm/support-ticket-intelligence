@@ -1,4 +1,8 @@
-const BASE = "http://localhost:8080/api";
+// In Docker, Nginx proxies /api/ to backend
+// In dev, calls localhost:8080 directly
+const BASE = import.meta.env.PROD
+  ? "/api"
+  : "http://localhost:8080/api";
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
