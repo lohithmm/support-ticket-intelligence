@@ -1,15 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 * { font-family: 'Inter', sans-serif; }
 code, .mono { font-family: 'JetBrains Mono', monospace; }
 
 body {
-  background-color: #6C9C8BFF;
-  color: #0F2A21FF;
+  background-color: #f1f5f9;
+  color: #0f172a;
   -webkit-font-smoothing: antialiased;
 }
 
