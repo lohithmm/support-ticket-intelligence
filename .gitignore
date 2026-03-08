@@ -1,0 +1,28 @@
+cd /Users/lohith/AI/support-ticket-intelligence
+
+cat > .gitignore << 'EOF'
+# Maven
+target/
+*.class
+
+# H2 database files
+*.mv.db
+*.trace.db
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+
+# Spring Boot
+*.jar
+*.war
+application-local.properties
+EOF
