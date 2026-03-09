@@ -22,27 +22,252 @@ function formatSla(mins) {
   return `${Math.floor(mins / 1440)}d left`;
 }
 
+// ── SVG Icons ─────────────────────────────────────────────────────────────────
+const Icons = {
+  // App logo — stylised ticket with spark
+  Logo: () => (
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        <rect width="36" height="36" rx="10" fill="url(#logoGrad)"/>
+        <path d="M7 13a2 2 0 012-2h18a2 2 0 012 2v2.5a2.5 2.5 0 000 5V23a2 2 0 01-2 2H9a2 2 0 01-2-2v-2.5a2.5 2.5 0 000-5V13z" fill="white" fillOpacity="0.15" stroke="white" strokeOpacity="0.4" strokeWidth="1"/>
+        <line x1="14" y1="11" x2="14" y2="25" stroke="white" strokeOpacity="0.3" strokeWidth="1" strokeDasharray="2 2"/>
+        <path d="M20 15l1.5 3h3l-2.5 2 1 3L20 21.5 17 23l1-3-2.5-2h3L20 15z" fill="white" fillOpacity="0.9"/>
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#6366f1"/>
+            <stop offset="1" stopColor="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+      </svg>
+  ),
+  Ticket: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 7a1 1 0 011-1h12a1 1 0 011 1v1.5a1.5 1.5 0 000 3V13a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.5a1.5 1.5 0 000-3V7z"/>
+        <line x1="7.5" y1="6" x2="7.5" y2="14" strokeDasharray="1.5 1.5"/>
+      </svg>
+  ),
+  Search: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="8.5" cy="8.5" r="5"/>
+        <path strokeLinecap="round" d="M15 15l-2.5-2.5"/>
+      </svg>
+  ),
+  Plus: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" d="M10 4v12M4 10h12"/>
+      </svg>
+  ),
+  ArrowLeft: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4l-6 6 6 6"/>
+      </svg>
+  ),
+  ArrowRight: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 4l6 6-6 6"/>
+      </svg>
+  ),
+  Edit: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11 2l3 3-8 8H3v-3l8-8z"/>
+      </svg>
+  ),
+  Close: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" d="M3 3l10 10M13 3L3 13"/>
+      </svg>
+  ),
+  Clock: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="8" cy="8" r="6"/>
+        <path strokeLinecap="round" d="M8 4.5V8l2.5 2"/>
+      </svg>
+  ),
+  AlertTriangle: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 2L1.5 13.5h13L8 2z"/>
+        <path strokeLinecap="round" d="M8 6v3.5M8 11.5v.5"/>
+      </svg>
+  ),
+  CheckCircle: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="8" cy="8" r="6"/>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 8l2 2 4-4"/>
+      </svg>
+  ),
+  Sparkle: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 1l1.5 4.5L14 7l-4.5 1.5L8 13l-1.5-4.5L2 7l4.5-1.5L8 1z"/>
+      </svg>
+  ),
+  Bot: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="7" width="14" height="10" rx="2"/>
+        <circle cx="7" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+        <circle cx="13" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+        <path strokeLinecap="round" d="M8 15.5h4"/>
+        <path strokeLinecap="round" d="M10 7V4M8 4h4"/>
+      </svg>
+  ),
+  Mail: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="2" y="5" width="16" height="12" rx="1.5"/>
+        <path strokeLinecap="round" d="M2 7l8 5 8-5"/>
+      </svg>
+  ),
+  Lightbulb: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" d="M10 2a6 6 0 014 10.47V14a1 1 0 01-1 1H7a1 1 0 01-1-1v-1.53A6 6 0 0110 2z"/>
+        <path strokeLinecap="round" d="M7.5 15v1a2.5 2.5 0 005 0v-1"/>
+      </svg>
+  ),
+  Duplicate: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" d="M7 3h8a1 1 0 011 1v10a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/>
+        <path strokeLinecap="round" d="M4 6H3a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1v-1"/>
+      </svg>
+  ),
+  Users: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="8" cy="7" r="3"/>
+        <path strokeLinecap="round" d="M2 17c0-3 2.5-5 6-5s6 2 6 5"/>
+        <path strokeLinecap="round" d="M14 4a3 3 0 010 6M18 17c0-2.5-1.5-4-4-4.5"/>
+      </svg>
+  ),
+  Activity: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <polyline strokeLinecap="round" strokeLinejoin="round" points="2,10 5,10 7,4 9,16 11,7 13,13 15,10 18,10"/>
+      </svg>
+  ),
+  Shield: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10 2l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V5l7-3z"/>
+      </svg>
+  ),
+  Tag: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h6l8 8-6 6-8-8V3z"/>
+        <circle cx="7" cy="7" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+  ),
+  Calendar: ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="2" y="4" width="16" height="14" rx="2"/>
+        <path strokeLinecap="round" d="M2 9h16M6 2v4M14 2v4"/>
+      </svg>
+  ),
+  Refresh: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path strokeLinecap="round" d="M13 3a6 6 0 11-2.5-1.5"/>
+        <path strokeLinecap="round" d="M13 3V6.5H9.5"/>
+      </svg>
+  ),
+  Copy: ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="5" y="5" width="9" height="9" rx="1"/>
+        <path strokeLinecap="round" d="M11 5V3a1 1 0 00-1-1H3a1 1 0 00-1 1v7a1 1 0 001 1h2"/>
+      </svg>
+  ),
+  // Stat card icons
+  BarChart: ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="2" y="11" width="3" height="7" rx="1"/>
+        <rect x="8.5" y="6" width="3" height="12" rx="1"/>
+        <rect x="15" y="2" width="3" height="16" rx="1"/>
+      </svg>
+  ),
+  CircleDot: ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="10" cy="10" r="8"/>
+        <circle cx="10" cy="10" r="3" fill="currentColor" stroke="none"/>
+      </svg>
+  ),
+  Zap: ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+        <path d="M11 2L3 11h7l-1 7 8-9h-7l1-7z"/>
+      </svg>
+  ),
+  Flame: ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="currentColor">
+        <path d="M10 2c0 0-6 5-6 10a6 6 0 0012 0c0-2-1-4-2-5-1 3-2 4-4 4s-3-2-2-5c-1 2-2 4-1 6a4 4 0 008 0c0-4-2-8-5-10z"/>
+      </svg>
+  ),
+  TrendingUp: ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <polyline strokeLinecap="round" strokeLinejoin="round" points="2,14 7,9 10,12 15,6 18,6"/>
+        <polyline strokeLinecap="round" points="15,6 18,6 18,9"/>
+      </svg>
+  ),
+};
+
 // ── Badges ────────────────────────────────────────────────────────────────────
 function PriorityBadge({ p }) {
-  const cfg = { CRITICAL:"bg-red-100 text-red-700 border border-red-200", HIGH:"bg-orange-100 text-orange-700 border border-orange-200", MEDIUM:"bg-amber-100 text-amber-700 border border-amber-200", LOW:"bg-slate-100 text-slate-600 border border-slate-200" };
+  const cfg = {
+    CRITICAL: "bg-red-100 text-red-700 border border-red-200",
+    HIGH:     "bg-orange-100 text-orange-700 border border-orange-200",
+    MEDIUM:   "bg-amber-100 text-amber-700 border border-amber-200",
+    LOW:      "bg-slate-100 text-slate-600 border border-slate-200",
+  };
   const dot = { CRITICAL:"bg-red-500", HIGH:"bg-orange-500", MEDIUM:"bg-amber-500", LOW:"bg-slate-400" };
-  return <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg ${cfg[p]||cfg.LOW}`}><span className={`w-1.5 h-1.5 rounded-full ${dot[p]||dot.LOW}`}/>{p}</span>;
-}
-function StatusBadge({ s }) {
-  const cfg = { OPEN:"bg-blue-100 text-blue-700 border border-blue-200", IN_PROGRESS:"bg-violet-100 text-violet-700 border border-violet-200", RESOLVED:"bg-emerald-100 text-emerald-700 border border-emerald-200", CLOSED:"bg-slate-100 text-slate-500 border border-slate-200" };
-  const dot = { OPEN:"bg-blue-500 animate-pulse", IN_PROGRESS:"bg-violet-500 animate-pulse", RESOLVED:"bg-emerald-500", CLOSED:"bg-slate-400" };
-  return <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg ${cfg[s]||cfg.CLOSED}`}><span className={`w-1.5 h-1.5 rounded-full ${dot[s]||dot.CLOSED}`}/>{s?.replace("_"," ")}</span>;
-}
-function SlaBadge({ risk, mins, large }) {
-  if (!risk || risk==="GREEN") return <span className={`inline-flex items-center gap-1 ${large?"text-sm":"text-xs"} text-emerald-600 font-semibold`}><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"/>Within SLA</span>;
-  const cfg = { BREACHED:"bg-red-600 text-white font-bold", RED:"bg-red-100 text-red-700 border border-red-200 font-bold", AMBER:"bg-amber-100 text-amber-700 border border-amber-200 font-semibold" };
-  return <span className={`inline-flex items-center gap-1.5 ${large?"text-sm px-3 py-1.5":"text-xs px-2.5 py-1"} rounded-lg ${cfg[risk]||cfg.RED}`}>{risk==="BREACHED"?"🔴":"🕐"} {formatSla(mins)}</span>;
+  return (
+      <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-lg ${cfg[p]||cfg.LOW}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${dot[p]||dot.LOW}`}/>
+        {p}
+    </span>
+  );
 }
 
-const CAT_ICON  = { BILLING:"💳", TECHNICAL:"⚙️", ACCESS:"🔐", PERFORMANCE:"⚡", OTHER:"📋" };
-const PRI_LEFT  = { CRITICAL:"bg-red-500", HIGH:"bg-orange-500", MEDIUM:"bg-amber-400", LOW:"bg-slate-300" };
+function StatusBadge({ s }) {
+  const cfg = {
+    OPEN:        "bg-blue-100 text-blue-700 border border-blue-200",
+    IN_PROGRESS: "bg-violet-100 text-violet-700 border border-violet-200",
+    RESOLVED:    "bg-emerald-100 text-emerald-700 border border-emerald-200",
+    CLOSED:      "bg-slate-100 text-slate-500 border border-slate-200",
+  };
+  const dot = {
+    OPEN:        "bg-blue-500 animate-pulse",
+    IN_PROGRESS: "bg-violet-500 animate-pulse",
+    RESOLVED:    "bg-emerald-500",
+    CLOSED:      "bg-slate-400",
+  };
+  return (
+      <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-lg ${cfg[s]||cfg.CLOSED}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${dot[s]||dot.CLOSED}`}/>
+        {s?.replace("_"," ")}
+    </span>
+  );
+}
+
+function SlaBadge({ risk, mins, large }) {
+  if (!risk || risk === "GREEN") return (
+      <span className={`inline-flex items-center gap-1.5 ${large?"text-sm":"text-xs"} text-emerald-600 font-semibold`}>
+      <Icons.CheckCircle className={large?"w-4 h-4":"w-3.5 h-3.5"}/>
+      Within SLA
+    </span>
+  );
+  const cfg = {
+    BREACHED: "bg-red-600 text-white font-bold",
+    RED:      "bg-red-100 text-red-700 border border-red-200 font-bold",
+    AMBER:    "bg-amber-100 text-amber-700 border border-amber-200 font-semibold",
+  };
+  return (
+      <span className={`inline-flex items-center gap-1.5 ${large?"text-sm px-3 py-1.5":"text-xs px-2.5 py-1"} rounded-lg ${cfg[risk]||cfg.RED}`}>
+      <Icons.Clock className={large?"w-4 h-4":"w-3 h-3"}/>
+        {formatSla(mins)}
+    </span>
+  );
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+const CAT_COLORS = {
+  BILLING:     "bg-blue-100 text-blue-700 border-blue-200",
+  TECHNICAL:   "bg-violet-100 text-violet-700 border-violet-200",
+  ACCESS:      "bg-amber-100 text-amber-700 border-amber-200",
+  PERFORMANCE: "bg-emerald-100 text-emerald-700 border-emerald-200",
+  OTHER:       "bg-slate-100 text-slate-600 border-slate-200",
+};
+const CAT_ICON = { BILLING:"💳", TECHNICAL:"⚙️", ACCESS:"🔐", PERFORMANCE:"⚡", OTHER:"📋" };
+const PRI_LEFT = { CRITICAL:"bg-red-500", HIGH:"bg-orange-500", MEDIUM:"bg-amber-400", LOW:"bg-slate-300" };
 const AGENTS    = ["Sam Lee","Priya Singh","Dev Team","Ops Team","Mobile Team","Billing Team","Unassigned"];
-const TEAMS     = ["Identity & Access","Billing","Platform Engineering","Platform Ops","Mobile Engineering"];
 const STATUSES  = ["OPEN","IN_PROGRESS","RESOLVED","CLOSED"];
 const PRIORITIES= ["CRITICAL","HIGH","MEDIUM","LOW"];
 const CATEGORIES= ["TECHNICAL","BILLING","ACCESS","PERFORMANCE","OTHER"];
@@ -51,7 +276,8 @@ const CATEGORIES= ["TECHNICAL","BILLING","ACCESS","PERFORMANCE","OTHER"];
 function InlineSelect({ value, options, onChange, label, colorFn }) {
   const [editing, setEditing] = useState(false);
   if (editing) return (
-      <select autoFocus value={value} onBlur={()=>setEditing(false)}
+      <select autoFocus value={value}
+              onBlur={()=>setEditing(false)}
               onChange={e=>{onChange(e.target.value);setEditing(false);}}
               className="text-xs border border-indigo-300 rounded-lg px-2 py-1 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-300 font-semibold cursor-pointer shadow-sm">
         {options.map(o=><option key={o} value={o}>{o.replace("_"," ")}</option>)}
@@ -61,25 +287,50 @@ function InlineSelect({ value, options, onChange, label, colorFn }) {
       <button onClick={()=>setEditing(true)} title={`Edit ${label}`}
               className="group flex items-center gap-1.5 hover:opacity-80 transition-opacity">
         {colorFn ? colorFn(value) : <span className="text-xs font-semibold text-slate-700">{value?.replace("_"," ")}</span>}
-        <span className="text-slate-300 group-hover:text-indigo-400 text-xs transition-colors">✎</span>
+        <Icons.Edit className="text-slate-300 group-hover:text-indigo-400 transition-colors"/>
       </button>
+  );
+}
+
+// ── Field — OUTSIDE NewTicketModal to fix cursor bug ──────────────────────────
+function Field({ label, k, type="text", placeholder="", as="input", opts=[], form, set, errors }) {
+  return (
+      <div>
+        <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">{label}</label>
+        {as==="select"
+            ? <select value={form[k]} onChange={e=>set(k,e.target.value)}
+                      className="w-full text-sm border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 font-medium">
+              {opts.map(o=><option key={o} value={o}>{o.replace("_"," ")}</option>)}
+            </select>
+            : as==="textarea"
+                ? <textarea value={form[k]} onChange={e=>set(k,e.target.value)} rows={3} placeholder={placeholder}
+                            className={`w-full text-sm border rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-100 resize-none font-medium ${errors[k]?"border-red-300":"border-slate-200 focus:border-indigo-400"}`}/>
+                : <input type={type} value={form[k]} onChange={e=>set(k,e.target.value)} placeholder={placeholder}
+                         className={`w-full text-sm border rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-100 font-medium ${errors[k]?"border-red-300":"border-slate-200 focus:border-indigo-400"}`}/>
+        }
+        {errors[k] && <p className="text-xs text-red-500 mt-1 font-medium">{errors[k]}</p>}
+      </div>
   );
 }
 
 // ── New Ticket Modal ──────────────────────────────────────────────────────────
 function NewTicketModal({ onClose, onCreate }) {
-  const [form, setForm] = useState({ title:"", description:"", category:"TECHNICAL", priority:"MEDIUM", customerName:"", customerEmail:"", companyName:"", customerPlan:"PRO", assignedAgent:"Unassigned" });
+  const [form, setForm] = useState({
+    title:"", description:"", category:"TECHNICAL", priority:"MEDIUM",
+    customerName:"", customerEmail:"", companyName:"", customerPlan:"PRO",
+    assignedAgent:"Unassigned",
+  });
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const set = (k,v) => setForm(f=>({...f,[k]:v}));
+  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const validate = () => {
     const e = {};
-    if (!form.title.trim())       e.title       = "Title is required";
-    if (!form.description.trim()) e.description = "Description is required";
-    if (!form.customerName.trim())e.customerName= "Customer name is required";
-    if (!form.customerEmail.trim()|| !form.customerEmail.includes("@")) e.customerEmail = "Valid email required";
+    if (!form.title.trim())        e.title        = "Title is required";
+    if (!form.description.trim())  e.description  = "Description is required";
+    if (!form.customerName.trim()) e.customerName = "Customer name is required";
+    if (!form.customerEmail.trim() || !form.customerEmail.includes("@")) e.customerEmail = "Valid email required";
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -94,22 +345,7 @@ function NewTicketModal({ onClose, onCreate }) {
     } catch(e) { console.error(e); setSaving(false); }
   };
 
-  const Field = ({ label, k, type="text", placeholder="", as="input", opts=[] }) => (
-      <div>
-        <label className="block text-xs font-bold text-slate-600 mb-1.5 uppercase tracking-wide">{label}</label>
-        {as==="select"
-            ? <select value={form[k]} onChange={e=>set(k,e.target.value)} className="w-full text-sm border border-slate-200 rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 font-medium">
-              {opts.map(o=><option key={o} value={o}>{o.replace("_"," ")}</option>)}
-            </select>
-            : as==="textarea"
-                ? <textarea value={form[k]} onChange={e=>set(k,e.target.value)} rows={3} placeholder={placeholder}
-                            className={`w-full text-sm border rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-100 resize-none font-medium ${errors[k]?"border-red-300":"border-slate-200 focus:border-indigo-400"}`}/>
-                : <input type={type} value={form[k]} onChange={e=>set(k,e.target.value)} placeholder={placeholder}
-                         className={`w-full text-sm border rounded-xl px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-100 font-medium ${errors[k]?"border-red-300":"border-slate-200 focus:border-indigo-400"}`}/>
-        }
-        {errors[k] && <p className="text-xs text-red-500 mt-1 font-medium">{errors[k]}</p>}
-      </div>
-  );
+  const slaDuration = form.priority==="CRITICAL"?"4 hours":form.priority==="HIGH"?"8 hours":form.priority==="LOW"?"48 hours":"24 hours";
 
   return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
@@ -118,58 +354,65 @@ function NewTicketModal({ onClose, onCreate }) {
           {/* Header */}
           <div className="sticky top-0 flex items-center justify-between px-7 py-5 border-b border-slate-100 bg-white rounded-t-3xl z-10">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-lg shadow-md shadow-indigo-500/20">🎫</div>
+              <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-500/20 p-2">
+                <Icons.Ticket className="w-full h-full text-white"/>
+              </div>
               <div>
                 <h2 className="text-lg font-black text-slate-900">New Ticket</h2>
                 <p className="text-xs text-slate-500 font-medium">SLA deadline is set automatically by priority</p>
               </div>
             </div>
-            <button onClick={onClose} className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 font-bold transition-colors">✕</button>
+            <button onClick={onClose} className="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors">
+              <Icons.Close/>
+            </button>
           </div>
 
           <div className="px-7 py-6 space-y-5">
-            {/* Issue */}
+            {/* Issue section */}
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
               <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Issue</p>
-              <Field label="Title *" k="title" placeholder="e.g. Cannot login to customer portal"/>
-              <Field label="Description *" k="description" as="textarea" placeholder="Describe the issue in detail..."/>
+              <Field label="Title *" k="title" placeholder="e.g. Cannot login to customer portal" form={form} set={set} errors={errors}/>
+              <Field label="Description *" k="description" as="textarea" placeholder="Describe the issue in detail..." form={form} set={set} errors={errors}/>
               <div className="grid grid-cols-3 gap-3">
-                <Field label="Category" k="category" as="select" opts={CATEGORIES}/>
-                <Field label="Priority" k="priority" as="select" opts={PRIORITIES}/>
-                <Field label="Assigned Agent" k="assignedAgent" as="select" opts={AGENTS}/>
+                <Field label="Category" k="category" as="select" opts={CATEGORIES} form={form} set={set} errors={errors}/>
+                <Field label="Priority" k="priority" as="select" opts={PRIORITIES} form={form} set={set} errors={errors}/>
+                <Field label="Assigned Agent" k="assignedAgent" as="select" opts={AGENTS} form={form} set={set} errors={errors}/>
               </div>
             </div>
 
-            {/* Customer */}
+            {/* Customer section */}
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-4">
               <p className="text-xs font-black text-slate-400 uppercase tracking-widest">Customer</p>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Customer Name *" k="customerName" placeholder="Alice Johnson"/>
-                <Field label="Customer Email *" k="customerEmail" type="email" placeholder="alice@acme.com"/>
+                <Field label="Customer Name *" k="customerName" placeholder="Alice Johnson" form={form} set={set} errors={errors}/>
+                <Field label="Customer Email *" k="customerEmail" type="email" placeholder="alice@acme.com" form={form} set={set} errors={errors}/>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Company" k="companyName" placeholder="Acme Corp"/>
-                <Field label="Plan" k="customerPlan" as="select" opts={["FREE","PRO","ENTERPRISE"]}/>
+                <Field label="Company" k="companyName" placeholder="Acme Corp" form={form} set={set} errors={errors}/>
+                <Field label="Plan" k="customerPlan" as="select" opts={["FREE","PRO","ENTERPRISE"]} form={form} set={set} errors={errors}/>
               </div>
             </div>
 
             {/* SLA preview */}
             <div className="flex items-center gap-3 p-3 rounded-xl bg-indigo-50 border border-indigo-200">
-              <span className="text-indigo-600 font-bold text-sm">⏱</span>
+              <Icons.Clock className="w-4 h-4 text-indigo-600 flex-shrink-0"/>
               <p className="text-xs text-indigo-700 font-semibold">
-                SLA deadline: <span className="font-black">
-                {form.priority==="CRITICAL"?"4 hours":form.priority==="HIGH"?"8 hours":form.priority==="LOW"?"48 hours":"24 hours"}
-              </span> from now based on {form.priority} priority
+                SLA deadline: <span className="font-black">{slaDuration}</span> from now based on {form.priority} priority
               </p>
             </div>
           </div>
 
           {/* Footer */}
           <div className="sticky bottom-0 flex items-center justify-end gap-3 px-7 py-4 border-t border-slate-100 bg-white rounded-b-3xl">
-            <button onClick={onClose} className="text-sm px-5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-100 transition-colors border border-slate-200">Cancel</button>
+            <button onClick={onClose} className="text-sm px-5 py-2.5 rounded-xl font-semibold text-slate-600 hover:bg-slate-100 transition-colors border border-slate-200">
+              Cancel
+            </button>
             <button onClick={handleSubmit} disabled={saving}
                     className="text-sm px-6 py-2.5 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20 transition-all disabled:opacity-50 flex items-center gap-2">
-              {saving ? <><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin"/>Creating…</> : "✦ Create Ticket"}
+              {saving
+                  ? <><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin"/>Creating…</>
+                  : <><Icons.Sparkle className="w-3.5 h-3.5"/>Create Ticket</>
+              }
             </button>
           </div>
         </div>
@@ -177,16 +420,13 @@ function NewTicketModal({ onClose, onCreate }) {
   );
 }
 
-
 // ── Duplicate Banner ──────────────────────────────────────────────────────────
 function DuplicateBanner({ ticket, onConfirm, onDismiss, onRescan }) {
   const [candidates, setCandidates] = useState([]);
   const [scanning,   setScanning]   = useState(false);
 
   useEffect(() => {
-    if (ticket.potentialDuplicate && !ticket.duplicateDismissed) {
-      setCandidates([]);
-    }
+    if (ticket.potentialDuplicate && !ticket.duplicateDismissed) setCandidates([]);
   }, [ticket]);
 
   const rescan = async () => {
@@ -203,7 +443,7 @@ function DuplicateBanner({ ticket, onConfirm, onDismiss, onRescan }) {
 
   if (ticket.duplicateConfirmed) return (
       <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-orange-50 border border-orange-200 mb-4">
-        <span className="text-lg">🔁</span>
+        <Icons.Duplicate className="w-5 h-5 text-orange-500 flex-shrink-0"/>
         <div>
           <p className="text-sm font-bold text-orange-800">Confirmed Duplicate</p>
           <p className="text-xs text-orange-600 font-medium">
@@ -219,12 +459,15 @@ function DuplicateBanner({ ticket, onConfirm, onDismiss, onRescan }) {
   if (!hasFlaggedMatch && !showCandidates) return (
       <div className="flex items-center justify-between px-5 py-3 rounded-2xl bg-slate-50 border border-slate-200 mb-4">
         <div className="flex items-center gap-2">
-          <span>🔁</span>
+          <Icons.Duplicate className="w-4 h-4 text-slate-400"/>
           <span className="text-xs text-slate-500 font-semibold">No duplicates detected</span>
         </div>
         <button onClick={rescan} disabled={scanning}
                 className="text-xs px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition-colors disabled:opacity-50 flex items-center gap-1.5">
-          {scanning ? <><span className="w-3 h-3 border border-slate-500 border-t-transparent rounded-full animate-spin"/>Scanning…</> : "↻ Rescan"}
+          {scanning
+              ? <><span className="w-3 h-3 border border-slate-500 border-t-transparent rounded-full animate-spin"/>Scanning…</>
+              : <><Icons.Refresh/>Rescan</>
+          }
         </button>
       </div>
   );
@@ -237,15 +480,18 @@ function DuplicateBanner({ ticket, onConfirm, onDismiss, onRescan }) {
       <div className="rounded-2xl border border-amber-300 bg-amber-50 mb-4 overflow-hidden">
         <div className="flex items-center justify-between px-5 py-3 border-b border-amber-200">
           <div className="flex items-center gap-2.5">
-            <span className="text-lg">🔁</span>
+            <Icons.Duplicate className="w-5 h-5 text-amber-600 flex-shrink-0"/>
             <div>
               <p className="text-sm font-bold text-amber-900">Potential Duplicate Detected</p>
-              <p className="text-xs text-amber-700 font-medium">{itemsToShow.length} similar open ticket(s) found · similarity ≥ 82%</p>
+              <p className="text-xs text-amber-700 font-medium">{itemsToShow.length} similar open ticket(s) found · similarity ≥ 75%</p>
             </div>
           </div>
           <button onClick={rescan} disabled={scanning}
                   className="text-xs px-3 py-1.5 rounded-lg bg-amber-200 hover:bg-amber-300 text-amber-800 font-bold transition-colors disabled:opacity-50 flex items-center gap-1.5">
-            {scanning ? <><span className="w-3 h-3 border border-amber-600 border-t-transparent rounded-full animate-spin"/>Scanning…</> : "↻ Rescan"}
+            {scanning
+                ? <><span className="w-3 h-3 border border-amber-600 border-t-transparent rounded-full animate-spin"/>Scanning…</>
+                : <><Icons.Refresh/>Rescan</>
+            }
           </button>
         </div>
         <div className="p-4 space-y-2">
@@ -254,13 +500,17 @@ function DuplicateBanner({ ticket, onConfirm, onDismiss, onRescan }) {
                 <div className="flex items-center gap-2.5 flex-1 min-w-0">
                   <span className="font-mono text-xs font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200 flex-shrink-0">{c.ticketNumber}</span>
                   {c.title && <span className="text-xs text-slate-600 font-medium truncate">{c.title}</span>}
-                  {c.score && <span className="text-xs font-black text-amber-700 flex-shrink-0">{(c.score * 100).toFixed(0)}% match</span>}
+                  {c.score  && <span className="text-xs font-black text-amber-700 flex-shrink-0">{(c.score * 100).toFixed(0)}% match</span>}
                 </div>
                 <div className="flex gap-2 flex-shrink-0 ml-3">
                   <button onClick={()=>onConfirm(c.ticketNumber)}
-                          className="text-xs px-3 py-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold transition-colors">✓ Confirm</button>
+                          className="text-xs px-3 py-1 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold transition-colors flex items-center gap-1">
+                    <Icons.CheckCircle className="w-3 h-3"/>Confirm
+                  </button>
                   <button onClick={onDismiss}
-                          className="text-xs px-3 py-1 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition-colors">✕ Dismiss</button>
+                          className="text-xs px-3 py-1 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold transition-colors flex items-center gap-1">
+                    <Icons.Close className="w-3 h-3"/>Dismiss
+                  </button>
                 </div>
               </div>
           ))}
@@ -275,19 +525,40 @@ function AiPanel({ title, icon, onGenerate, loading, done, children }) {
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
         <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-base shadow-sm">{icon}</div>
+            <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center shadow-sm text-indigo-600">
+              {icon}
+            </div>
             <span className="text-sm font-semibold text-slate-800">{title}</span>
-            {done && <span className="text-xs bg-emerald-100 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold">✓ Done</span>}
+            {done && (
+                <span className="text-xs bg-emerald-100 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full font-semibold flex items-center gap-1">
+              <Icons.CheckCircle className="w-3 h-3"/>Done
+            </span>
+            )}
           </div>
           <button onClick={onGenerate} disabled={loading}
                   className={`text-sm px-4 py-1.5 rounded-xl font-semibold transition-all flex items-center gap-2 ${done?"bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-200":"bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20"} disabled:opacity-40 disabled:cursor-not-allowed`}>
-            {loading?<><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin"/>Generating…</>:done?"↻ Redo":"✨ Generate"}
+            {loading
+                ? <><span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin"/>Generating…</>
+                : done
+                    ? <><Icons.Refresh className="w-3.5 h-3.5"/>Redo</>
+                    : <><Icons.Sparkle className="w-3.5 h-3.5"/>Generate</>
+            }
           </button>
         </div>
         <div className="p-5 min-h-[80px]">
-          {loading&&<div className="flex items-center gap-3"><div className="flex gap-1">{[0,1,2].map(i=><div key={i} className="w-2 h-2 rounded-full bg-indigo-400" style={{animation:"bounce 1s ease-in-out infinite",animationDelay:`${i*0.2}s`}}/>)}</div><span className="text-sm text-slate-400 italic">llama3.2 is thinking…</span></div>}
-          {!loading&&!done&&<p className="text-sm text-slate-400">Click Generate to run AI analysis on this ticket.</p>}
-          {!loading&&done&&children}
+          {loading && (
+              <div className="flex items-center gap-3">
+                <div className="flex gap-1">
+                  {[0,1,2].map(i=>(
+                      <div key={i} className="w-2 h-2 rounded-full bg-indigo-400"
+                           style={{animation:"bounce 1s ease-in-out infinite", animationDelay:`${i*0.2}s`}}/>
+                  ))}
+                </div>
+                <span className="text-sm text-slate-400 italic">llama3.2 is thinking…</span>
+              </div>
+          )}
+          {!loading && !done && <p className="text-sm text-slate-400">Click Generate to run AI analysis on this ticket.</p>}
+          {!loading && done && children}
         </div>
       </div>
   );
@@ -295,17 +566,17 @@ function AiPanel({ title, icon, onGenerate, loading, done, children }) {
 
 // ── Ticket Detail Page ────────────────────────────────────────────────────────
 function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
-  const [ticket, setTicket]       = useState(initialTicket);
-  const [summary, setSummary]     = useState(null);
-  const [similar, setSimilar]     = useState(null);
-  const [resolution, setResolution]= useState(null);
-  const [draft, setDraft]         = useState(null);
-  const [loading, setLoading]     = useState({});
-  const [copied, setCopied]       = useState(false);
-  const [activeTab, setActiveTab] = useState("details");
-  const [saving, setSaving]       = useState(false);
-  const [saveMsg, setSaveMsg]     = useState(null);
-  const [notes, setNotes]         = useState({ internal: ticket.internalNotes||"", resolution: ticket.resolutionNotes||"" });
+  const [ticket,     setTicket]     = useState(initialTicket);
+  const [summary,    setSummary]    = useState(null);
+  const [similar,    setSimilar]    = useState(null);
+  const [resolution, setResolution] = useState(null);
+  const [draft,      setDraft]      = useState(null);
+  const [loading,    setLoading]    = useState({});
+  const [copied,     setCopied]     = useState(false);
+  const [activeTab,  setActiveTab]  = useState("details");
+  const [saving,     setSaving]     = useState(false);
+  const [saveMsg,    setSaveMsg]    = useState(null);
+  const [notes,      setNotes]      = useState({ internal: ticket.internalNotes||"", resolution: ticket.resolutionNotes||"" });
 
   const run = async (key, apiFn, setter) => {
     setLoading(l=>({...l,[key]:true}));
@@ -342,19 +613,18 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
   const handleConfirmDuplicate = async (ofTicket) => {
     try {
       const updated = await api.confirmDuplicate(ticket.id, ofTicket);
-      setTicket(updated);
-      onTicketUpdated(updated);
+      setTicket(updated); onTicketUpdated(updated);
     } catch(e) { console.error(e); }
   };
 
   const handleDismissDuplicate = async () => {
     try {
       const updated = await api.dismissDuplicate(ticket.id);
-      setTicket(updated);
-      onTicketUpdated(updated);
+      setTicket(updated); onTicketUpdated(updated);
     } catch(e) { console.error(e); }
   };
-  const barColor  = PRI_LEFT[ticket.priority] || "bg-slate-300";
+
+  const barColor = PRI_LEFT[ticket.priority] || "bg-slate-300";
 
   return (
       <div className="flex-1 flex flex-col overflow-hidden bg-slate-50">
@@ -363,7 +633,7 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
         {/* Header */}
         <div className="flex-shrink-0 px-8 py-5 border-b border-slate-200 bg-white shadow-sm">
           <button onClick={onBack} className="flex items-center gap-2 text-xs text-slate-500 hover:text-indigo-600 mb-4 group transition-colors font-medium">
-            <span className="group-hover:-translate-x-1 transition-transform inline-block">←</span>
+            <Icons.ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform"/>
             Back to Dashboard
             <span className="text-slate-300 mx-1">/</span>
             <span className="font-mono text-slate-400">{ticket.ticketNumber}</span>
@@ -373,26 +643,26 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">{ticket.ticketNumber}</span>
-
-                {/* Editable Priority */}
                 <InlineSelect value={ticket.priority} options={PRIORITIES} label="priority"
                               onChange={v=>updateField("priority",v)} colorFn={v=><PriorityBadge p={v}/>}/>
-
-                {/* Editable Status */}
                 <InlineSelect value={ticket.status} options={STATUSES} label="status"
                               onChange={v=>updateField("status",v)} colorFn={v=><StatusBadge s={v}/>}/>
-
-                <span className="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 font-medium">{CAT_ICON[ticket.category]} {ticket.category}</span>
-                {ticket.escalated && <span className="text-xs bg-orange-100 text-orange-700 border border-orange-200 px-2.5 py-1 rounded-lg font-bold">🚨 Escalated</span>}
-                {ticket.potentialDuplicate && !ticket.duplicateDismissed && (
-                    <span className={`text-xs px-2.5 py-1 rounded-lg font-bold border ${ticket.duplicateConfirmed ? "bg-orange-100 text-orange-700 border-orange-200" : "bg-amber-100 text-amber-700 border-amber-200"}`}>
-                  🔁 {ticket.duplicateConfirmed ? "Duplicate" : "Possible Duplicate"}
+                <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg border ${CAT_COLORS[ticket.category]||CAT_COLORS.OTHER}`}>
+                {CAT_ICON[ticket.category]} {ticket.category}
+              </span>
+                {ticket.escalated && (
+                    <span className="text-xs bg-orange-100 text-orange-700 border border-orange-200 px-2.5 py-1 rounded-lg font-bold flex items-center gap-1">
+                  <Icons.AlertTriangle className="w-3 h-3"/>Escalated
                 </span>
                 )}
-
-                {/* Save indicator */}
-                {saving && <span className="text-xs text-indigo-500 font-semibold flex items-center gap-1"><span className="w-3 h-3 border border-indigo-300 border-t-indigo-600 rounded-full animate-spin"/>Saving…</span>}
-                {saveMsg && <span className="text-xs text-emerald-600 font-bold">✓ {saveMsg}</span>}
+                {ticket.potentialDuplicate && !ticket.duplicateDismissed && (
+                    <span className={`text-xs px-2.5 py-1 rounded-lg font-bold border flex items-center gap-1 ${ticket.duplicateConfirmed?"bg-orange-100 text-orange-700 border-orange-200":"bg-amber-100 text-amber-700 border-amber-200"}`}>
+                  <Icons.Duplicate className="w-3 h-3"/>
+                      {ticket.duplicateConfirmed ? "Duplicate" : "Possible Duplicate"}
+                </span>
+                )}
+                {saving  && <span className="text-xs text-indigo-500 font-semibold flex items-center gap-1"><span className="w-3 h-3 border border-indigo-300 border-t-indigo-600 rounded-full animate-spin"/>Saving…</span>}
+                {saveMsg && <span className="text-xs text-emerald-600 font-bold flex items-center gap-1"><Icons.CheckCircle className="w-3 h-3"/>{saveMsg}</span>}
               </div>
               <h1 className="text-2xl font-black text-slate-900 leading-tight">{ticket.title}</h1>
               <p className="text-sm text-slate-500 mt-2 font-medium">{ticket.companyName} · {ticket.customerName} · {timeAgo(ticket.createdAt)}</p>
@@ -406,7 +676,7 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
           </div>
 
           <div className="flex gap-1 mt-5">
-            {[["details","📋 Details"],["ai","🤖 AI Actions"]].map(([val,label])=>(
+            {[["details","details","📋 Details"],["ai","ai","🤖 AI Actions"]].map(([val,,label])=>(
                 <button key={val} onClick={()=>setActiveTab(val)}
                         className={`text-sm px-5 py-2 rounded-xl font-semibold transition-all ${activeTab===val?"bg-indigo-600 text-white shadow-md shadow-indigo-500/20":"text-slate-500 hover:text-slate-800 hover:bg-slate-100"}`}>
                   {label}
@@ -415,25 +685,23 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
           </div>
         </div>
 
+        {/* Body */}
         <div className="flex-1 overflow-y-auto">
           {activeTab==="details" && (
               <div className="max-w-5xl mx-auto px-8 py-6 grid grid-cols-3 gap-5">
                 <div className="col-span-2 space-y-4">
-                  <DuplicateBanner
-                      ticket={ticket}
-                      onConfirm={handleConfirmDuplicate}
-                      onDismiss={handleDismissDuplicate}
-                      onRescan={()=>{}}
-                  />
+                  <DuplicateBanner ticket={ticket} onConfirm={handleConfirmDuplicate} onDismiss={handleDismissDuplicate} onRescan={()=>{}}/>
+
                   <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Description</p>
                     <p className="text-sm text-slate-700 leading-relaxed">{ticket.description}</p>
                   </div>
 
-                  {/* Editable Internal Notes */}
                   <div className="rounded-2xl bg-amber-50 border border-amber-200 p-5">
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-xs font-bold text-amber-600 uppercase tracking-widest">🔒 Internal Notes</p>
+                      <p className="text-xs font-bold text-amber-600 uppercase tracking-widest flex items-center gap-1.5">
+                        <Icons.Shield className="w-3.5 h-3.5"/>Internal Notes
+                      </p>
                       <button onClick={saveNotes} disabled={saving}
                               className="text-xs px-3 py-1 rounded-lg bg-amber-200 hover:bg-amber-300 text-amber-800 font-bold transition-colors disabled:opacity-50">
                         {saving?"Saving…":"Save Notes"}
@@ -444,10 +712,11 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
                               className="w-full text-sm text-amber-800 bg-transparent border border-amber-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300 resize-none placeholder-amber-400 font-medium"/>
                   </div>
 
-                  {/* Editable Resolution Notes */}
                   <div className="rounded-2xl bg-emerald-50 border border-emerald-200 p-5">
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest">✓ Resolution Notes</p>
+                      <p className="text-xs font-bold text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
+                        <Icons.CheckCircle className="w-3.5 h-3.5"/>Resolution Notes
+                      </p>
                       <button onClick={saveNotes} disabled={saving}
                               className="text-xs px-3 py-1 rounded-lg bg-emerald-200 hover:bg-emerald-300 text-emerald-800 font-bold transition-colors disabled:opacity-50">
                         {saving?"Saving…":"Save Notes"}
@@ -460,8 +729,11 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
                 </div>
 
                 <div className="space-y-4">
+                  {/* Customer card */}
                   <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Customer</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                      <Icons.Users className="w-3.5 h-3.5"/>Customer
+                    </p>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-sm font-black text-white shadow-md shadow-indigo-500/20">
                         {ticket.customerName?.charAt(0)}
@@ -472,15 +744,24 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
                       </div>
                     </div>
                     <div className="space-y-2.5 text-xs">
-                      <div className="flex justify-between"><span className="text-slate-500">Email</span><span className="text-slate-700 font-medium truncate ml-2 max-w-[140px]">{ticket.customerEmail}</span></div>
-                      <div className="flex justify-between items-center"><span className="text-slate-500">Plan</span>
-                        <span className={`font-bold px-2 py-0.5 rounded-lg text-xs ${ticket.customerPlan==="ENTERPRISE"?"bg-violet-100 text-violet-700 border border-violet-200":ticket.customerPlan==="PRO"?"bg-blue-100 text-blue-700 border border-blue-200":"bg-slate-100 text-slate-600 border border-slate-200"}`}>{ticket.customerPlan}</span>
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Email</span>
+                        <span className="text-slate-700 font-medium truncate ml-2 max-w-[140px]">{ticket.customerEmail}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-slate-500">Plan</span>
+                        <span className={`font-bold px-2 py-0.5 rounded-lg text-xs ${ticket.customerPlan==="ENTERPRISE"?"bg-violet-100 text-violet-700 border border-violet-200":ticket.customerPlan==="PRO"?"bg-blue-100 text-blue-700 border border-blue-200":"bg-slate-100 text-slate-600 border border-slate-200"}`}>
+                      {ticket.customerPlan}
+                    </span>
                       </div>
                     </div>
                   </div>
 
+                  {/* Agent card */}
                   <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Agent</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                      <Icons.Shield className="w-3.5 h-3.5"/>Agent
+                    </p>
                     <div className="mb-3">
                       <InlineSelect value={ticket.assignedAgent||"Unassigned"} options={AGENTS} label="agent"
                                     onChange={v=>updateField("assignedAgent",v)}
@@ -497,22 +778,36 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
                     <p className="text-xs text-slate-500 mt-1">SLA: <span className="text-slate-700 font-semibold">{ticket.slaPolicy}</span></p>
                   </div>
 
+                  {/* Timeline card */}
                   <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Timeline</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                      <Icons.Calendar className="w-3.5 h-3.5"/>Timeline
+                    </p>
                     <div className="space-y-2.5 text-xs">
-                      {[["Created",ticket.createdAt],["First Response",ticket.firstResponseAt],["Resolved",ticket.resolvedAt]].filter(([,v])=>v).map(([label,val])=>(
-                          <div key={label} className="flex justify-between">
-                            <span className="text-slate-500">{label}</span>
-                            <span className="text-slate-700 font-semibold">{new Date(val).toLocaleDateString()}</span>
+                      {[["Created",ticket.createdAt],["First Response",ticket.firstResponseAt],["Resolved",ticket.resolvedAt]]
+                          .filter(([,v])=>v)
+                          .map(([label,val])=>(
+                              <div key={label} className="flex justify-between">
+                                <span className="text-slate-500">{label}</span>
+                                <span className="text-slate-700 font-semibold">{new Date(val).toLocaleDateString()}</span>
+                              </div>
+                          ))
+                      }
+                      {ticket.reopenCount>0 && (
+                          <div className="flex justify-between">
+                            <span className="text-slate-500">Reopened</span>
+                            <span className="text-orange-600 font-bold">{ticket.reopenCount}×</span>
                           </div>
-                      ))}
-                      {ticket.reopenCount>0 && <div className="flex justify-between"><span className="text-slate-500">Reopened</span><span className="text-orange-600 font-bold">{ticket.reopenCount}×</span></div>}
+                      )}
                     </div>
                   </div>
 
+                  {/* Tags card */}
                   {ticket.tags && (
                       <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Tags</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5">
+                          <Icons.Tag className="w-3.5 h-3.5"/>Tags
+                        </p>
                         <div className="flex flex-wrap gap-1.5">
                           {(typeof ticket.tags==="string"?ticket.tags.split(","):ticket.tags).map((tag,i)=>(
                               <span key={i} className="text-xs bg-slate-100 text-slate-600 border border-slate-200 px-2 py-0.5 rounded-lg font-medium">{tag.trim()}</span>
@@ -527,14 +822,25 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
           {activeTab==="ai" && (
               <div className="max-w-3xl mx-auto px-8 py-6 space-y-4">
                 <div className="flex items-center gap-3 mb-6 p-4 rounded-2xl bg-indigo-50 border border-indigo-200">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-lg shadow-md shadow-indigo-500/20">🤖</div>
-                  <div><p className="text-sm font-bold text-indigo-900">AI-Powered Analysis</p><p className="text-xs text-indigo-600">Powered by llama3.2 · Qdrant RAG · Generate each panel independently</p></div>
+                  <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white">
+                    <Icons.Bot className="w-5 h-5"/>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-indigo-900">AI-Powered Analysis</p>
+                    <p className="text-xs text-indigo-600">Powered by llama3.2 · Qdrant RAG · Generate each panel independently</p>
+                  </div>
                 </div>
-                <AiPanel title="Ticket Summary" icon="🤖" onGenerate={()=>run("summary",api.summariseTicket,d=>setSummary(d.summary))} loading={loading.summary} done={!!summary}>
+
+                <AiPanel title="Ticket Summary" icon={<Icons.Bot className="w-4 h-4"/>}
+                         onGenerate={()=>run("summary",api.summariseTicket,d=>setSummary(d.summary))}
+                         loading={loading.summary} done={!!summary}>
                   <p className="text-sm text-slate-700 leading-relaxed">{summary}</p>
                 </AiPanel>
-                <AiPanel title="Similar Resolved Tickets" icon="🔍" onGenerate={()=>run("similar",api.getSimilarTickets,setSimilar)} loading={loading.similar} done={!!similar}>
-                  {similar?.length===0&&<p className="text-sm text-slate-400 italic">No similar tickets found in knowledge base.</p>}
+
+                <AiPanel title="Similar Resolved Tickets" icon={<Icons.Search className="w-4 h-4"/>}
+                         onGenerate={()=>run("similar",api.getSimilarTickets,setSimilar)}
+                         loading={loading.similar} done={!!similar}>
+                  {similar?.length===0 && <p className="text-sm text-slate-400 italic">No similar tickets found in knowledge base.</p>}
                   <div className="space-y-3">
                     {similar?.map((t,i)=>(
                         <div key={i} className="rounded-xl bg-slate-50 border border-slate-200 p-4 hover:border-indigo-300 transition-colors">
@@ -543,23 +849,38 @@ function TicketDetailPage({ ticket: initialTicket, onBack, onTicketUpdated }) {
                             <span className="text-xs text-slate-500 font-medium">{t.category} · {t.priority}</span>
                           </div>
                           <p className="text-sm font-semibold text-slate-800 mb-2">{t.title}</p>
-                          {t.resolutionNotes&&<div className="flex gap-2 bg-emerald-50 rounded-lg p-2.5 border border-emerald-200"><span className="text-emerald-600 flex-shrink-0 font-bold">✓</span><p className="text-xs text-emerald-800 leading-relaxed">{t.resolutionNotes}</p></div>}
+                          {t.resolutionNotes && (
+                              <div className="flex gap-2 bg-emerald-50 rounded-lg p-2.5 border border-emerald-200">
+                                <Icons.CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0 mt-0.5"/>
+                                <p className="text-xs text-emerald-800 leading-relaxed">{t.resolutionNotes}</p>
+                              </div>
+                          )}
                         </div>
                     ))}
                   </div>
                 </AiPanel>
-                <AiPanel title="Resolution Suggester" icon="💡" onGenerate={()=>run("resolution",api.getResolution,setResolution)} loading={loading.resolution} done={!!resolution}>
+
+                <AiPanel title="Resolution Suggester" icon={<Icons.Lightbulb className="w-4 h-4"/>}
+                         onGenerate={()=>run("resolution",api.getResolution,setResolution)}
+                         loading={loading.resolution} done={!!resolution}>
                   <pre className="whitespace-pre-wrap font-sans text-sm text-slate-700 leading-relaxed">{resolution?.suggestion}</pre>
-                  {resolution?.similarTickets?.length>0&&(
+                  {resolution?.similarTickets?.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap mt-4 pt-4 border-t border-slate-100">
                         <span className="text-xs text-slate-500 font-semibold">Based on:</span>
-                        {resolution.similarTickets.map((t,i)=><span key={i} className="font-mono text-xs text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">{t.ticketNumber}</span>)}
+                        {resolution.similarTickets.map((t,i)=>(
+                            <span key={i} className="font-mono text-xs text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-lg border border-indigo-200">{t.ticketNumber}</span>
+                        ))}
                       </div>
                   )}
                 </AiPanel>
-                <AiPanel title="Draft Client Response" icon="✉️" onGenerate={()=>run("draft",api.draftResponse,d=>setDraft(d.draft))} loading={loading.draft} done={!!draft}>
-                  <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap mb-3 font-mono text-xs">{draft}</div>
-                  <button onClick={copyDraft} className="text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1.5 transition-colors">{copied?"✓ Copied!":"📋 Copy to clipboard"}</button>
+
+                <AiPanel title="Draft Client Response" icon={<Icons.Mail className="w-4 h-4"/>}
+                         onGenerate={()=>run("draft",api.draftResponse,d=>setDraft(d.draft))}
+                         loading={loading.draft} done={!!draft}>
+                  <div className="rounded-xl bg-slate-50 border border-slate-200 p-4 text-xs text-slate-700 leading-relaxed whitespace-pre-wrap mb-3 font-mono">{draft}</div>
+                  <button onClick={copyDraft} className="text-sm text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1.5 transition-colors">
+                    <Icons.Copy/>{copied ? "✓ Copied!" : "Copy to clipboard"}
+                  </button>
                 </AiPanel>
               </div>
           )}
@@ -574,31 +895,42 @@ function Dashboard({ tickets, onSelectTicket, onNewTicket }) {
   const [search, setSearch] = useState("");
   const [sort,   setSort]   = useState("sla");
 
-  const FILTERS = [{label:"All",value:"ALL"},{label:"Open",value:"OPEN"},{label:"In Progress",value:"IN_PROGRESS"},{label:"Critical",value:"CRITICAL"},{label:"SLA Risk",value:"SLA_RISK"},{label:"Escalated",value:"ESCALATED"}];
+  const FILTERS = [
+    {label:"All",     value:"ALL"},
+    {label:"Open",    value:"OPEN"},
+    {label:"In Progress", value:"IN_PROGRESS"},
+    {label:"Critical",value:"CRITICAL"},
+    {label:"SLA Risk",value:"SLA_RISK"},
+    {label:"Escalated",value:"ESCALATED"},
+  ];
 
   const filtered = tickets
-      .filter(t=>{
-        if(filter==="OPEN")return t.status==="OPEN";
-        if(filter==="IN_PROGRESS")return t.status==="IN_PROGRESS";
-        if(filter==="CRITICAL")return t.priority==="CRITICAL";
-        if(filter==="SLA_RISK")return["RED","AMBER","BREACHED"].includes(t.slaRisk);
-        if(filter==="ESCALATED")return t.escalated;
+      .filter(t => {
+        if (filter==="OPEN")       return t.status==="OPEN";
+        if (filter==="IN_PROGRESS")return t.status==="IN_PROGRESS";
+        if (filter==="CRITICAL")   return t.priority==="CRITICAL";
+        if (filter==="SLA_RISK")   return ["RED","AMBER","BREACHED"].includes(t.slaRisk);
+        if (filter==="ESCALATED")  return t.escalated;
         return true;
       })
-      .filter(t=>!search||t.title?.toLowerCase().includes(search.toLowerCase())||t.ticketNumber?.toLowerCase().includes(search.toLowerCase())||t.customerName?.toLowerCase().includes(search.toLowerCase()))
-      .sort((a,b)=>{
-        if(sort==="sla"){const o={BREACHED:0,RED:1,AMBER:2,GREEN:3};return(o[a.slaRisk]??3)-(o[b.slaRisk]??3);}
-        if(sort==="priority"){const o={CRITICAL:0,HIGH:1,MEDIUM:2,LOW:3};return(o[a.priority]??3)-(o[b.priority]??3);}
+      .filter(t => !search ||
+          t.title?.toLowerCase().includes(search.toLowerCase()) ||
+          t.ticketNumber?.toLowerCase().includes(search.toLowerCase()) ||
+          t.customerName?.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) => {
+        if (sort==="sla")     { const o={BREACHED:0,RED:1,AMBER:2,GREEN:3}; return (o[a.slaRisk]??3)-(o[b.slaRisk]??3); }
+        if (sort==="priority"){ const o={CRITICAL:0,HIGH:1,MEDIUM:2,LOW:3}; return (o[a.priority]??3)-(o[b.priority]??3); }
         return new Date(b.createdAt)-new Date(a.createdAt);
       });
 
   const stats = [
-    {label:"Total",value:tickets.length,icon:"📊",bg:"bg-white",text:"text-slate-800",border:"border-slate-200"},
-    {label:"Open",value:tickets.filter(t=>t.status==="OPEN").length,icon:"🔵",bg:"bg-blue-50",text:"text-blue-700",border:"border-blue-200"},
-    {label:"In Progress",value:tickets.filter(t=>t.status==="IN_PROGRESS").length,icon:"🟣",bg:"bg-violet-50",text:"text-violet-700",border:"border-violet-200"},
-    {label:"Critical",value:tickets.filter(t=>t.priority==="CRITICAL").length,icon:"🔴",bg:"bg-red-50",text:"text-red-700",border:"border-red-200"},
-    {label:"SLA At Risk",value:tickets.filter(t=>["RED","AMBER","BREACHED"].includes(t.slaRisk)).length,icon:"⚠️",bg:"bg-amber-50",text:"text-amber-700",border:"border-amber-200"},
-    {label:"Escalated",value:tickets.filter(t=>t.escalated).length,icon:"🚨",bg:"bg-orange-50",text:"text-orange-700",border:"border-orange-200"},
+    { label:"Total",      value:tickets.length,                                            icon:<Icons.BarChart/>,    bg:"bg-white",      text:"text-slate-800", border:"border-slate-200" },
+    { label:"Open",       value:tickets.filter(t=>t.status==="OPEN").length,               icon:<Icons.CircleDot/>,   bg:"bg-blue-50",    text:"text-blue-700",  border:"border-blue-200"  },
+    { label:"In Progress",value:tickets.filter(t=>t.status==="IN_PROGRESS").length,        icon:<Icons.Activity/>,    bg:"bg-violet-50",  text:"text-violet-700",border:"border-violet-200"},
+    { label:"Critical",   value:tickets.filter(t=>t.priority==="CRITICAL").length,         icon:<Icons.Flame/>,       bg:"bg-red-50",     text:"text-red-700",   border:"border-red-200"   },
+    { label:"SLA At Risk",value:tickets.filter(t=>["RED","AMBER","BREACHED"].includes(t.slaRisk)).length, icon:<Icons.TrendingUp/>, bg:"bg-amber-50",   text:"text-amber-700", border:"border-amber-200" },
+    { label:"Escalated",  value:tickets.filter(t=>t.escalated).length,                     icon:<Icons.AlertTriangle/>,bg:"bg-orange-50", text:"text-orange-700",border:"border-orange-200"},
   ];
 
   return (
@@ -607,7 +939,7 @@ function Dashboard({ tickets, onSelectTicket, onNewTicket }) {
         <div className="flex-shrink-0 grid grid-cols-6 gap-3 px-6 py-4 border-b border-slate-200 bg-white">
           {stats.map((s,i)=>(
               <div key={i} className={`rounded-2xl border ${s.border} ${s.bg} px-4 py-3 hover:shadow-md transition-shadow cursor-default`}>
-                <span className="text-xl">{s.icon}</span>
+                <div className={s.text}>{s.icon}</div>
                 <p className={`text-2xl font-black mt-1 ${s.text}`}>{s.value}</p>
                 <p className="text-xs text-slate-500 mt-0.5 font-semibold">{s.label}</p>
               </div>
@@ -617,9 +949,13 @@ function Dashboard({ tickets, onSelectTicket, onNewTicket }) {
         {/* Toolbar */}
         <div className="flex-shrink-0 flex flex-wrap items-center gap-2 px-6 py-3 border-b border-slate-200 bg-white">
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs">🔍</span>
-            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search tickets, customers..."
-                   className="bg-slate-50 border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 w-56 transition-all font-medium"/>
+            <input
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search tickets, customers..."
+                autoComplete="off"   // ← add this
+                className="bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs ..."
+            />
           </div>
           <div className="flex gap-1">
             {FILTERS.map(f=>(
@@ -637,7 +973,7 @@ function Dashboard({ tickets, onSelectTicket, onNewTicket }) {
           </select>
           <button onClick={onNewTicket}
                   className="ml-auto flex items-center gap-2 text-sm px-4 py-2 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-500/20 transition-all">
-            ＋ New Ticket
+            <Icons.Plus className="w-4 h-4"/>New Ticket
           </button>
         </div>
 
@@ -653,23 +989,33 @@ function Dashboard({ tickets, onSelectTicket, onNewTicket }) {
             </thead>
             <tbody>
             {filtered.map((ticket,idx)=>{
-              const bar = PRI_LEFT[ticket.priority]||"bg-slate-300";
-              const rowBg = idx%2===0?"bg-white":"bg-slate-50/80";
+              const bar    = PRI_LEFT[ticket.priority]||"bg-slate-300";
+              const rowBg  = idx%2===0?"bg-white":"bg-slate-50/80";
               return (
                   <tr key={ticket.id} onClick={()=>onSelectTicket(ticket)}
                       className={`border-b border-slate-100 cursor-pointer transition-all relative group ${rowBg} hover:bg-indigo-50/50 hover:border-indigo-100`}>
-                    <td className="w-1 p-0 relative"><div className={`absolute left-0 top-2 bottom-2 w-[3px] rounded-full ${bar} opacity-30 group-hover:opacity-100 transition-all`}/></td>
-                    <td className="px-4 py-3.5 whitespace-nowrap"><span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">{ticket.ticketNumber}</span></td>
+                    <td className="w-1 p-0 relative">
+                      <div className={`absolute left-0 top-2 bottom-2 w-[3px] rounded-full ${bar} opacity-30 group-hover:opacity-100 transition-all`}/>
+                    </td>
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      <span className="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg border border-indigo-200">{ticket.ticketNumber}</span>
+                    </td>
                     <td className="px-4 py-3.5 max-w-sm">
                       <p className="text-sm font-semibold text-slate-800 group-hover:text-indigo-900 leading-snug mb-1 line-clamp-1 transition-colors">{ticket.title}</p>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs text-slate-500 font-medium">{CAT_ICON[ticket.category]} {ticket.category}</span>
+                      <span className={`text-xs font-medium px-1.5 py-0.5 rounded-md border ${CAT_COLORS[ticket.category]||CAT_COLORS.OTHER}`}>
+                        {CAT_ICON[ticket.category]} {ticket.category}
+                      </span>
                         <span className="text-slate-300 text-xs">·</span>
                         <span className="text-xs text-slate-500">{ticket.companyName}</span>
-                        {ticket.escalated&&<span className="text-xs bg-orange-100 text-orange-700 border border-orange-200 px-1.5 py-0.5 rounded-md font-bold">🚨</span>}
+                        {ticket.escalated && (
+                            <span className="text-xs bg-orange-100 text-orange-700 border border-orange-200 px-1.5 py-0.5 rounded-md font-bold flex items-center gap-0.5">
+                          <Icons.AlertTriangle className="w-2.5 h-2.5"/>
+                        </span>
+                        )}
                         {ticket.potentialDuplicate && !ticket.duplicateDismissed && (
-                            <span className={`text-xs px-1.5 py-0.5 rounded-md font-bold border ${ticket.duplicateConfirmed ? "bg-orange-100 text-orange-700 border-orange-200" : "bg-amber-100 text-amber-700 border-amber-200"}`}>
-                          🔁
+                            <span className={`text-xs px-1.5 py-0.5 rounded-md font-bold border flex items-center gap-0.5 ${ticket.duplicateConfirmed?"bg-orange-100 text-orange-700 border-orange-200":"bg-amber-100 text-amber-700 border-amber-200"}`}>
+                          <Icons.Duplicate className="w-2.5 h-2.5"/>
                         </span>
                         )}
                       </div>
@@ -678,19 +1024,31 @@ function Dashboard({ tickets, onSelectTicket, onNewTicket }) {
                     <td className="px-4 py-3.5 whitespace-nowrap"><StatusBadge s={ticket.status}/></td>
                     <td className="px-4 py-3.5 whitespace-nowrap"><SlaBadge risk={ticket.slaRisk} mins={ticket.minutesUntilSla}/></td>
                     <td className="px-4 py-3.5 whitespace-nowrap">
-                      {ticket.assignedAgent&&ticket.assignedAgent!=="Unassigned"
-                          ?<div className="flex items-center gap-2"><div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-black text-white shadow-sm">{ticket.assignedAgent.charAt(0)}</div><span className="text-xs text-slate-700 font-semibold">{ticket.assignedAgent}</span></div>
-                          :<span className="text-xs text-slate-400 italic">Unassigned</span>
+                      {ticket.assignedAgent && ticket.assignedAgent!=="Unassigned"
+                          ? <div className="flex items-center gap-2">
+                            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xs font-black text-white shadow-sm">{ticket.assignedAgent.charAt(0)}</div>
+                            <span className="text-xs text-slate-700 font-semibold">{ticket.assignedAgent}</span>
+                          </div>
+                          : <span className="text-xs text-slate-400 italic">Unassigned</span>
                       }
                     </td>
-                    <td className="px-4 py-3.5 whitespace-nowrap"><span className="font-mono text-xs text-slate-400 font-medium">{timeAgo(ticket.createdAt)}</span></td>
-                    <td className="px-4 py-3.5"><span className="text-slate-300 group-hover:text-indigo-500 transition-colors text-sm font-bold">→</span></td>
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      <span className="font-mono text-xs text-slate-400 font-medium">{timeAgo(ticket.createdAt)}</span>
+                    </td>
+                    <td className="px-4 py-3.5">
+                      <Icons.ArrowRight className="text-slate-300 group-hover:text-indigo-500 transition-colors"/>
+                    </td>
                   </tr>
               );
             })}
             </tbody>
           </table>
-          {filtered.length===0&&<div className="text-center py-20"><p className="text-4xl mb-3">🎫</p><p className="text-sm text-slate-400 font-medium">No tickets match your filter</p></div>}
+          {filtered.length===0 && (
+              <div className="text-center py-20">
+                <div className="w-12 h-12 mx-auto mb-3 text-slate-300"><Icons.Ticket className="w-full h-full"/></div>
+                <p className="text-sm text-slate-400 font-medium">No tickets match your filter</p>
+              </div>
+          )}
         </div>
 
         <div className="flex-shrink-0 flex items-center justify-between px-6 py-2.5 border-t border-slate-200 bg-white">
@@ -706,9 +1064,9 @@ function Header() {
   return (
       <header className="flex-shrink-0 flex items-center justify-between px-6 h-14 border-b border-slate-200 bg-white shadow-sm z-40">
         <div className="flex items-center gap-3">
-          <div className="relative">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-base shadow-lg shadow-indigo-500/25">🎫</div>
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white shadow-sm"/>
+          {/* New SVG Logo */}
+          <div className="relative w-9 h-9 rounded-xl overflow-hidden shadow-lg shadow-indigo-500/25">
+            <Icons.Logo/>
           </div>
           <div>
             <h1 className="text-sm font-black text-slate-900 tracking-tight">SupportIQ</h1>
@@ -716,7 +1074,11 @@ function Header() {
           </div>
         </div>
         <div className="flex items-center gap-5">
-          {[["bg-emerald-400","llama3.2"],["bg-blue-400","Qdrant RAG"],["bg-violet-500","Ollama"]].map(([bg,label])=>(
+          {[
+            ["bg-emerald-400","llama3.2",    <Icons.Bot    className="w-3 h-3"/>],
+            ["bg-blue-400",   "Qdrant RAG",  <Icons.Search className="w-3 h-3"/>],
+            ["bg-violet-500", "Ollama",      <Icons.Zap    className="w-3 h-3"/>],
+          ].map(([bg,label,icon])=>(
               <span key={label} className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
             <span className={`w-2 h-2 rounded-full ${bg} animate-pulse shadow-sm`}/>{label}
           </span>
@@ -728,44 +1090,49 @@ function Header() {
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [tickets,    setTickets]    = useState([]);
-  const [loading,    setLoading]    = useState(true);
-  const [selected,   setSelected]   = useState(null);
-  const [showModal,  setShowModal]  = useState(false);
-  const [error,      setError]      = useState(null);
+  const [tickets,   setTickets]   = useState([]);
+  const [loading,   setLoading]   = useState(true);
+  const [selected,  setSelected]  = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [error,     setError]     = useState(null);
 
   useEffect(()=>{
     api.getAllTickets()
-        .then(data=>{setTickets(data);setLoading(false);})
-        .catch(()=>{setError("Cannot connect to backend on port 8080.");setLoading(false);});
+        .then(data=>{ setTickets(data); setLoading(false); })
+        .catch(()=>{ setError("Cannot connect to backend on port 8080."); setLoading(false); });
   },[]);
 
   const handleTicketUpdated = (updated) => {
     setTickets(ts=>ts.map(t=>t.id===updated.id?updated:t));
-    if(selected?.id===updated.id) setSelected(updated);
+    if (selected?.id===updated.id) setSelected(updated);
   };
 
   const handleTicketCreated = (ticket) => {
-    setTickets(ts=>[ticket, ...ts]);
+    setTickets(ts=>[ticket,...ts]);
   };
 
   return (
       <div className="h-screen flex flex-col bg-slate-100 text-slate-900 overflow-hidden">
         <Header/>
-        {error&&<div className="mx-6 mt-4 rounded-2xl bg-red-50 border border-red-200 px-5 py-3 text-sm text-red-700 font-semibold flex-shrink-0">⚠️ {error}</div>}
-        {loading?(
+        {error && (
+            <div className="mx-6 mt-4 rounded-2xl bg-red-50 border border-red-200 px-5 py-3 text-sm text-red-700 font-semibold flex-shrink-0 flex items-center gap-2">
+              <Icons.AlertTriangle className="w-4 h-4 flex-shrink-0"/>
+              {error}
+            </div>
+        )}
+        {loading ? (
             <div className="flex-1 flex items-center justify-center bg-slate-50">
               <div className="text-center">
                 <div className="w-12 h-12 border-2 border-slate-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-4"/>
                 <p className="text-sm text-slate-500 font-semibold">Loading tickets…</p>
               </div>
             </div>
-        ):selected?(
+        ) : selected ? (
             <TicketDetailPage ticket={selected} onBack={()=>setSelected(null)} onTicketUpdated={handleTicketUpdated}/>
-        ):(
+        ) : (
             <Dashboard tickets={tickets} onSelectTicket={setSelected} onNewTicket={()=>setShowModal(true)}/>
         )}
-        {showModal&&<NewTicketModal onClose={()=>setShowModal(false)} onCreate={handleTicketCreated}/>}
+        {showModal && <NewTicketModal onClose={()=>setShowModal(false)} onCreate={handleTicketCreated}/>}
       </div>
   );
 }
