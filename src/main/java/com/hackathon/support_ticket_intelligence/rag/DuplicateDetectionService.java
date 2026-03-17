@@ -1,6 +1,5 @@
 package com.hackathon.support_ticket_intelligence.rag;
 
-
 import com.hackathon.support_ticket_intelligence.model.Ticket;
 import com.hackathon.support_ticket_intelligence.repository.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +21,15 @@ public class DuplicateDetectionService {
     private static final double DUPLICATE_THRESHOLD = 0.75;
     private static final int    MAX_CANDIDATES      = 5;
 
-    private final VectorStore       vectorStore;
+    private final VectorStore      vectorStore;
     private final TicketRepository ticketRepository;
 
     public record DuplicateCandidate(
-        String ticketNumber,
-        String title,
-        String status,
-        String priority,
-        double score
+            String ticketNumber,
+            String title,
+            String status,
+            String priority,
+            double score
     ) {}
 
     /**
@@ -42,33 +41,29 @@ public class DuplicateDetectionService {
 
         try {
             List<Document> results = vectorStore.similaritySearch(
-                SearchRequest.builder()
-                    .query(query)
-                    .topK(MAX_CANDIDATES)
-                    .similarityThreshold(DUPLICATE_THRESHOLD)
-                    .build()
+                    SearchRequest.builder()
+                            .query(query)
+                            .topK(MAX_CANDIDATES)
+                            .similarityThreshold(DUPLICATE_THRESHOLD)
+                            .build()
             );
 
-            // Filter out the ticket itself and already-resolved tickets
+            // Only skip self — match against OPEN and RESOLVED tickets both
             Optional<Document> bestMatch = results.stream()
-                .filter(doc -> {
-                    String ticketNumber = (String) doc.getMetadata().get("ticketNumber");
-                    String status       = (String) doc.getMetadata().get("status");
-                    // Skip self, skip resolved/closed (they have their own RAG panel)
-                    return ticketNumber != null
-                        && !ticketNumber.equals(newTicket.getTicketNumber())
-                        && !"RESOLVED".equals(status)
-                        && !"CLOSED".equals(status);
-                })
-                .findFirst();
+                    .filter(doc -> {
+                        String ticketNumber = (String) doc.getMetadata().get("ticketNumber");
+                        return ticketNumber != null
+                                && !ticketNumber.equals(newTicket.getTicketNumber());
+                    })
+                    .findFirst();
 
             if (bestMatch.isPresent()) {
                 Document match     = bestMatch.get();
                 String matchNumber = (String) match.getMetadata().get("ticketNumber");
                 double score       = match.getScore();
 
-                log.info("🔁 Duplicate detected: {} is similar to {} (score: {})",
-                    newTicket.getTicketNumber(), matchNumber, score);
+                log.info("Duplicate detected: {} is similar to {} (score: {})",
+                        newTicket.getTicketNumber(), matchNumber, score);
 
                 newTicket.setPotentialDuplicate(true);
                 newTicket.setDuplicateOfTicket(matchNumber);
@@ -93,21 +88,21 @@ public class DuplicateDetectionService {
 
         try {
             List<Document> results = vectorStore.similaritySearch(
-                SearchRequest.builder()
-                    .query(query)
-                    .topK(MAX_CANDIDATES)
-                    .similarityThreshold(DUPLICATE_THRESHOLD)
-                    .build()
+                    SearchRequest.builder()
+                            .query(query)
+                            .topK(MAX_CANDIDATES)
+                            .similarityThreshold(DUPLICATE_THRESHOLD)
+                            .build()
             );
 
             for (Document doc : results) {
                 String ticketNumber = (String) doc.getMetadata().get("ticketNumber");
-                String status       = (String) doc.getMetadata().get("status");
                 String title        = (String) doc.getMetadata().get("title");
+                String status       = (String) doc.getMetadata().get("status");
                 String priority     = (String) doc.getMetadata().get("priority");
 
+                // Only skip self — allow RESOLVED and OPEN both
                 if (ticketNumber == null || ticketNumber.equals(ticket.getTicketNumber())) continue;
-                if ("RESOLVED".equals(status) || "CLOSED".equals(status))               continue;
 
                 candidates.add(new DuplicateCandidate(ticketNumber, title, status, priority, doc.getScore()));
             }

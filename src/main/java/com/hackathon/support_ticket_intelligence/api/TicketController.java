@@ -115,6 +115,10 @@ public class TicketController {
                     ticket.setUpdatedAt(LocalDateTime.now());
                     Ticket saved = ticketRepository.save(ticket);
                     saved.computeSlaRisk();
+                    // Re-ingest into Qdrant whenever resolutionNotes or status changes
+                    if (updates.containsKey("resolutionNotes") || updates.containsKey("status")) {
+                        ingestionService.ingestTicket(saved);
+                    }
                     return ResponseEntity.ok(saved);
                 })
                 .orElse(ResponseEntity.notFound().build());

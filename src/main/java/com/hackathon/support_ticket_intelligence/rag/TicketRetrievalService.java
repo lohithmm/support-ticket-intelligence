@@ -25,12 +25,13 @@ public class TicketRetrievalService {
                         .query(query)
                         .topK(topK)
                         .similarityThreshold(0.5)
+                        .filterExpression("status == 'RESOLVED'")  // ADD THIS LINE
                         .build()
         );
 
         return results.stream()
-            .map(this::toSimilarTicket)
-            .toList();
+                .map(this::toSimilarTicket)
+                .toList();
     }
 
     private SimilarTicket toSimilarTicket(Document doc) {
